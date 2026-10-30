@@ -32,7 +32,7 @@ describe("contato pelo WhatsApp", () => {
     expect(site.whatsappMessage).toContain("dúvida");
   });
   it("link usa o número oficial e codifica quebras de linha", () => {
-    const l = whatsappLink(buildContactMessage({ message: msg }))!;
+    const l = whatsappLink(buildContactMessage({ message: msg, name: "Ana" }))!;
     expect(l.startsWith("https://wa.me/5519978155601?text=")).toBe(true);
     expect(l).toContain("%0A");
   });
