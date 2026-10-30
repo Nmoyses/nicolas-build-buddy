@@ -1,0 +1,107 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 2px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-pine: var(--pine);
+  --color-linen: var(--linen);
+  --color-clay: var(--clay);
+  --color-wood: var(--wood);
+  --color-ivory: var(--ivory);
+  --color-overlay: var(--overlay);
+}
+
+:root {
+  --radius: 0.125rem;
+  --pine: oklch(0.32 0.025 155);       /* #29372E */
+  --linen: oklch(0.92 0.02 80);        /* #EDE5D7 */
+  --clay: oklch(0.54 0.08 45);         /* #9A6449 */
+  --wood: oklch(0.34 0.025 45);        /* #49382F */
+  --ivory: oklch(0.98 0.006 85);       /* #FAF8F3 */
+  --overlay: oklch(0.18 0.015 150 / 55%);
+
+  --background: var(--ivory);
+  --foreground: var(--wood);
+  --card: var(--linen);
+  --card-foreground: var(--wood);
+  --popover: var(--ivory);
+  --popover-foreground: var(--wood);
+  --primary: var(--clay);
+  --primary-foreground: var(--ivory);
+  --secondary: var(--pine);
+  --secondary-foreground: var(--ivory);
+  --muted: var(--linen);
+  --muted-foreground: oklch(0.48 0.02 50);
+  --accent: var(--linen);
+  --accent-foreground: var(--wood);
+  --destructive: oklch(0.55 0.18 27);
+  --destructive-foreground: var(--ivory);
+  --border: oklch(0.34 0.025 45 / 15%);
+  --input: oklch(0.34 0.025 45 / 25%);
+  --ring: var(--clay);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0 1.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
