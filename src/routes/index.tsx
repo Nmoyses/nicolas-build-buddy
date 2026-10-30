@@ -4,7 +4,7 @@ import { Sections } from "@/components/site/Sections";
 
 const title = "Vila Terroir | Chalé Malbec na Serra da Mantiqueira";
 const description =
-  "Conheça a Vila Terroir, um refúgio de montanha na Serra da Mantiqueira. Explore o Chalé Malbec, descubra a região e consulte as opções de reserva.";
+  "Conheça a Vila Terroir, um refúgio de montanha na Serra da Mantiqueira. Explore o Chalé Malbec, descubra a região e reserve pelo Airbnb, nosso canal oficial.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
