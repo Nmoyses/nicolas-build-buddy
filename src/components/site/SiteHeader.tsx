@@ -7,7 +7,7 @@ export const navItems = [
   { href: "#chale", label: "O Chalé" },
   { href: "#experiencia", label: "A Experiência" },
   { href: "#regiao", label: "A Região" },
-  { href: "#reservas", label: "Reservas" },
+ { label: "Contato", href: "#contato" },
 ];
 
 export function SiteHeader() {
