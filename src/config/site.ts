@@ -1,4 +1,6 @@
 // Configuração central da Vila Terroir | Chalé Malbec.
+// Regra de negócio: reservas somente pelo Airbnb (link oficial).
+// O WhatsApp é canal apenas para dúvidas e contato geral — nunca datas ou reserva direta.
 
 export const site = {
   name: "Vila Terroir",
@@ -9,7 +11,7 @@ export const site = {
   instagramHandle: "@vilaterroir",
   whatsappNumber: "5519978155601",
   whatsappMessage:
-    "Olá! Conheci a Vila Terroir pelo site e gostaria de saber mais sobre a disponibilidade do Chalé Malbec.",
+    "Olá! Conheci a Vila Terroir pelo site e gostaria de tirar uma dúvida sobre o Chalé Malbec.",
   address: "Estr. da Candelária - Distrito de Candelária",
   city: "Brazópolis, Minas Gerais",
   mapsUrl: "https://maps.app.goo.gl/Qk8NUGieJKPjjWMZ7",
@@ -24,26 +26,32 @@ export const site = {
   ],
 };
 
-export const whatsappLink = (msg: string) => {
+export const whatsappLink = (msg: string = site.whatsappMessage) => {
   if (!site.whatsappNumber) return "";
   return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(msg)}`;
 };
 
 export const whatsapplink = whatsappLink;
 
-export type Inquiry = { checkin: string; checkout: string; guests: string; name?: string };
+// Contato geral: sem datas, sem check-in/check-out, sem hóspedes.
+export type Contact = { name?: string; contact?: string; message: string };
 
-export function validateInquiry(data: Inquiry) {
-  const errors: Record<string, string> = {};
-  if (!data.checkin) errors.checkin = "Informe a data de check-in";
-  if (!data.checkout) errors.checkout = "Informe a data de check-out";
-  return errors;
+export function validateContact(data: Contact): string | null {
+  const message = (data.message ?? "").trim();
+  if (!message) return "Escreva sua dúvida ou mensagem.";
+  if (message.length < 5) return "Conte um pouco mais para podermos te responder.";
+  return null;
 }
 
-export function buildInquiryMessage(data: Inquiry) {
-  return `${site.whatsappMessage}\n\nPeríodo: ${data.checkin} até ${data.checkout}\nHóspedes: ${data.guests}`;
+export function buildContactMessage(data: Contact): string {
+  const lines = [data.message.trim()];
+  const name = (data.name ?? "").trim();
+  const contact = (data.contact ?? "").trim();
+  if (name) lines.push(`Nome: ${name}`);
+  if (contact) lines.push(`Contato para resposta: ${contact}`);
+  return lines.join("\n\n");
 }
 
-export function track(event: string, data?: Record<string, any>) {
+export function track(event: string, data?: Record<string, unknown>) {
   console.log(`[Tracking] ${event}`, data);
 }

@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { ChevronLeft, ChevronRight, MessageCircle, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { site, track, whatsappLink, validateInquiry, buildInquiryMessage } from "@/config/site";
+import { site, track, whatsappLink, validateContact, buildContactMessage } from "@/config/site";
 import { navItems } from "./SiteHeader";
 import logo from "@/assets/logo-vila-terroir.png.asset.json";
 import hero from "@/assets/hero.avif.asset.json";
@@ -33,7 +33,7 @@ function AirbnbButton({ label, from, className = "" }: { label: string; from: st
 }
 
 function WhatsAppButton({ label, from, className = "" }: { label: string; from: string; className?: string }) {
-  const href = whatsappLink();
+  const href = whatsappLink(site.whatsappMessage);
   if (!href) return null;
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" onClick={() => track("whatsapp_click", { from })} className={`btn border border-ivory/60 text-ivory hover:bg-ivory hover:text-pine ${className}`}>
@@ -210,7 +210,8 @@ export function Sections() {
         <h2 className="mt-4 text-4xl md:text-5xl">Antes de chegar</h2>
         <Accordion type="single" collapsible className="mt-10">
           {([
-            ["Como reservar?", "As reservas são feitas pelo Airbnb, no anúncio oficial do Chalé Malbec."],
+            ["Como reservar?", "As reservas são feitas exclusivamente pelo Airbnb, no anúncio oficial do Chalé Malbec."],
+            ["Posso reservar ou consultar datas pelo WhatsApp?", "Não. O WhatsApp é um canal apenas para dúvidas e informações gerais. Datas, disponibilidade e reservas acontecem somente no Airbnb."],
             ["Qual é a capacidade do chalé?", "O Chalé Malbec acomoda até 4 hóspedes, com 75 m² de área interna: ideal para casais e para famílias."],
             ["Quais são as comodidades disponíveis?", "A lista completa e atualizada está no anúncio oficial do Airbnb."],
             ["Como chegar?", "As instruções de acesso são enviadas aos hóspedes após a confirmação da reserva."],
@@ -227,18 +228,19 @@ export function Sections() {
         </Accordion>
       </section>
 
-      {/* CTA FINAL */}
-      <section id="reservas" className="relative overflow-hidden bg-pine text-ivory">
+      {/* CONTATO + CTA FINAL */}
+      <section id="contato" className="relative overflow-hidden bg-pine text-ivory">
         <img src={finalsite.url} alt="" aria-hidden loading="lazy" width={720} height={960} className="absolute inset-0 h-full w-full object-cover opacity-25" />
         <div className="relative mx-auto max-w-4xl px-6 py-28 text-center md:py-40">
-          <h2 className="text-4xl leading-tight md:text-7xl">Sua próxima história pode começar aqui.</h2>
+          <p className="eyebrow text-linen/90">Contato</p>
+          <h2 className="mt-4 text-4xl leading-tight md:text-7xl">Sua próxima história pode começar aqui.</h2>
           <p className="mx-auto mt-8 max-w-xl text-lg text-linen/90">Às vezes, tudo o que precisamos é de alguns dias em um lugar especial.</p>
-          <p className="mx-auto mt-2 max-w-xl text-lg text-linen/90">Escolha suas datas, consulte a disponibilidade e venha descobrir a experiência Vila Terroir.</p>
+          <p className="mx-auto mt-2 max-w-xl text-lg text-linen/90">Reserve pelo Airbnb, nosso canal oficial. E se quiser saber mais sobre o chalé, a região ou qualquer outra coisa, é só deixar sua mensagem abaixo.</p>
           <div className="mt-12 flex flex-col justify-center gap-3 sm:flex-row">
-            <AirbnbButton label="Ver disponibilidade no Airbnb" from="cta" />
-            <WhatsAppButton label="Converse conosco pelo WhatsApp" from="cta" />
+            <AirbnbButton label="Reservar no Airbnb" from="cta" />
+            <WhatsAppButton label="Tirar dúvidas pelo WhatsApp" from="cta" />
           </div>
-          <Inquiry />
+          <ContactForm />
         </div>
       </section>
 
@@ -257,11 +259,11 @@ export function Sections() {
             <a href={site.airbnbUrl} target="_blank" rel="noopener noreferrer" className="hover:text-ivory">Airbnb</a>
           </div>
         </div>
-        <p className="border-t border-ivory/10 px-6 py-6 text-center text-xs opacity-60">© {new Date().getFullYear()} {site.name}.</p>
+        <p className="border-t border-ivory/10 px-6 py-6 text-center text-xs opacity-60">© {new Date().getFullYear()} {site.name}. Reservas exclusivamente pelo Airbnb.</p>
       </footer>
 
       {whatsappLink() && (
-        <a href={whatsappLink()!} target="_blank" rel="noopener noreferrer" aria-label="Falar pelo WhatsApp" onClick={() => track("whatsapp_click", { from: "float" })} className="fixed bottom-5 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-pine text-ivory shadow-lg">
+        <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="Tirar dúvidas pelo WhatsApp" onClick={() => track("whatsapp_click", { from: "float" })} className="fixed bottom-5 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-pine text-ivory shadow-lg">
           <MessageCircle />
         </a>
       )}
@@ -269,29 +271,44 @@ export function Sections() {
   );
 }
 
-function Inquiry() {
+function ContactForm() {
   const [error, setError] = useState("");
   if (!site.whatsappNumber) return null;
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
-    const data = { checkIn: String(f.get("in") || ""), checkOut: String(f.get("out") || ""), guests: String(f.get("guests") || ""), name: String(f.get("name") || "") };
-    const err = validateInquiry(data);
-    if (err) return setError(err);
+    const data = {
+      name: String(f.get("name") || ""),
+      contact: String(f.get("contact") || ""),
+      message: String(f.get("message") || ""),
+    };
+    const err = validateContact(data);
+    if (err) { setError(err); return; }
     setError("");
-    track("inquiry_submit");
-    window.open(whatsappLink(buildInquiryMessage(data))!, "_blank", "noopener");
+    track("contact_submit");
+    window.open(whatsappLink(buildContactMessage(data)), "_blank", "noopener");
   };
-  const field = "mt-1 h-12 w-full border border-ivory/30 bg-transparent px-3 text-ivory";
+  const field = "mt-1 h-12 w-full border border-ivory/30 bg-pine/70 px-3 text-ivory placeholder:text-linen/80 focus-visible:border-ivory/60";
   return (
-    <form onSubmit={submit} className="mx-auto mt-16 grid max-w-2xl gap-4 text-left sm:grid-cols-2">
-      <label className="text-sm">Entrada<input name="in" type="date" required className={field} /></label>
-      <label className="text-sm">Saída<input name="out" type="date" required className={field} /></label>
-      <label className="text-sm">Hóspedes<input name="guests" type="number" min={1} defaultValue={2} required className={field} /></label>
-      <label className="text-sm">Nome (opcional)<input name="name" className={field} /></label>
-      {error && <p role="alert" className="text-sm text-linen sm:col-span-2">{error}</p>}
-      <button className="btn bg-clay text-ivory hover:bg-wood sm:col-span-2">Consultar pelo WhatsApp</button>
-      <p className="text-xs text-linen/70 sm:col-span-2">A disponibilidade é confirmada pelo canal oficial.</p>
+    <form onSubmit={submit} className="mx-auto mt-16 max-w-2xl rounded-sm border border-ivory/15 bg-pine/90 px-6 py-8 text-left backdrop-blur-sm md:px-10 md:py-10">
+      <p className="eyebrow text-linen/90">Fale conosco</p>
+      <h3 className="mt-3 font-display text-3xl">Tire suas dúvidas</h3>
+      <p className="mt-2 text-sm leading-relaxed text-linen/85">
+        Este é um canal para perguntas e informações gerais. Para reservar, use o Airbnb, nosso canal oficial.
+      </p>
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <label className="text-sm">Nome (opcional)<input name="name" placeholder="Como podemos te chamar" className={field} /></label>
+        <label className="text-sm">Contato para resposta (opcional)<input name="contact" placeholder="E-mail ou WhatsApp" className={field} /></label>
+      </div>
+      <label className="mt-4 block text-sm">
+        Mensagem
+        <textarea name="message" rows={4} placeholder="Escreva sua dúvida sobre o chalé, a região ou o acesso" className={`${field} h-auto py-3`} />
+      </label>
+      {error && <p role="alert" className="mt-3 text-sm text-linen">{error}</p>}
+      <button className="btn mt-6 w-full bg-clay text-ivory hover:bg-wood">Enviar mensagem pelo WhatsApp</button>
+      <p className="mt-3 text-xs leading-relaxed text-linen/85">
+        As reservas são feitas somente pelo Airbnb. Esta mensagem serve apenas para dúvidas e contato geral.
+      </p>
     </form>
   );
 }
