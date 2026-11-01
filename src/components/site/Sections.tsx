@@ -15,13 +15,57 @@ import paisagem from "@/assets/paisagem.avif.asset.json";
 import paisagem2 from "@/assets/paisagem2.avif.asset.json";
 import finalsite from "@/assets/finalsite.avif.asset.json";
 
-const photos = [
-  { src: hero.url, alt: "Chalé Malbec entre a lavanda ao entardecer", cat: "Exterior", w: 720, h: 960 },
-  { src: quarto.url, alt: "Quarto com teto de madeira e vista para a varanda", cat: "Quarto", w: 720, h: 540 },
-  { src: banheiro.url, alt: "Banheiro com banheira de pedra, bancada de madeira e janela com vista para as montanhas", cat: "Banheiro", w: 1440, h: 1081 },
-  { src: fogo.url, alt: "Fogo de chão no deck ao pôr do sol", cat: "Área externa", w: 1200, h: 900 },
-  { src: varanda.url, alt: "Varanda com mesa e bancos de frente para o pôr do sol na serra", cat: "Área externa", w: 720, h: 960 },
-  { src: paisagem2.url, alt: "Vista das montanhas com neblina ao amanhecer", cat: "Paisagem", w: 720, h: 540 },
+
+// Definição dos seus 4 layouts de galeria
+const galleryLayouts = [
+  {
+    id: 1,
+    title: "Layout 1 - Destaque Exterior",
+    photos: [
+      { src: hero.url, alt: "Chalé Malbec entre a lavanda ao entardecer", cat: "Exterior", span: "large" },
+      { src: quarto.url, alt: "Quarto com teto de madeira e vista para a varanda", cat: "Quarto" },
+      { src: banheiro.url, alt: "Banheiro com banheira de pedra", cat: "Banheiro" },
+      { src: fogo.url, alt: "Fogo de chão no deck ao pôr do sol", cat: "Área externa" },
+      { src: varanda.url, alt: "Varanda com mesa e bancos", cat: "Área externa" },
+      { src: paisagem2.url, alt: "Vista das montanhas", cat: "Paisagem" },
+    ]
+  },
+  {
+    id: 2,
+    title: "Layout 2 - Foco Interno",
+    photos: [
+      { src: quarto.url, alt: "Quarto aconchegante", cat: "Quarto", span: "large" },
+      { src: hero.url, alt: "Exterior do chalé", cat: "Exterior" },
+      { src: varanda.url, alt: "Varanda externa", cat: "Área externa" },
+      { src: banheiro.url, alt: "Banheiro moderno", cat: "Banheiro" },
+      { src: fogo.url, alt: "Área de fogueira", cat: "Área externa" },
+      { src: paisagem2.url, alt: "Paisagem panorâmica", cat: "Paisagem" },
+    ]
+  },
+  {
+    id: 3,
+    title: "Layout 3 - Área Externa",
+    photos: [
+      { src: fogo.url, alt: "Fogueira ao ar livre", cat: "Área externa", span: "large" },
+      { src: varanda.url, alt: "Deck de madeira", cat: "Área externa" },
+      { src: hero.url, alt: "Vista geral", cat: "Exterior" },
+      { src: quarto.url, alt: "Quarto principal", cat: "Quarto" },
+      { src: banheiro.url, alt: "Banheiro", cat: "Banheiro" },
+      { src: paisagem2.url, alt: "Nascer do sol", cat: "Paisagem" },
+    ]
+  },
+  {
+    id: 4,
+    title: "Layout 4 - Experiência Completa",
+    photos: [
+      { src: paisagem2.url, alt: "Vista das montanhas", cat: "Paisagem", span: "large" },
+      { src: banheiro.url, alt: "Banheira com vista", cat: "Banheiro" },
+      { src: quarto.url, alt: "Quarto confortável", cat: "Quarto" },
+      { src: hero.url, alt: "Chalé ao anoitecer", cat: "Exterior" },
+      { src: varanda.url, alt: "Varanda aconchegante", cat: "Área externa" },
+      { src: fogo.url, alt: "Fogo de chão", cat: "Área externa" },
+    ]
+  }
 ];
 
 function AirbnbButton({ label, from, className = "" }: { label: string; from: string; className?: string }) {
@@ -53,6 +97,17 @@ function SectionHead({ eyebrow, title, children }: { eyebrow: string; title: str
 }
 
 export function Sections() {
+  const [currentLayoutIndex, setCurrentLayoutIndex] = useState(0);
+
+  const prevLayout = () => {
+    setCurrentLayoutIndex((prev) => (prev === 0 ? galleryLayouts.length - 1 : prev - 1));
+  };
+
+  const nextLayout = () => {
+    setCurrentLayoutIndex((prev) => (prev === galleryLayouts.length - 1 ? 0 : prev + 1));
+  };
+
+  const activeLayout = galleryLayouts[currentLayoutIndex];
   const [index, setIndex] = useState<number | null>(null);
   const openAt = (i: number) => { setIndex(i); track("gallery_open", { i }); };
   const step = (d: number) => setIndex((i) => (i === null ? i : (i + d + photos.length) % photos.length));
@@ -102,18 +157,7 @@ export function Sections() {
             <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm">{site.features.map((f) => <li key={f}>{f}</li>)}</ul>
           )}
           <div className="mt-16 columns-2 gap-3 md:columns-3 md:gap-4">
-            {photos.map((p, i) => (
-              <button
-                key={i}
-                onClick={() => openAt(i)}
-                aria-label={`Ampliar: ${p.alt}`}
-                className="group relative mb-3 block w-full break-inside-avoid overflow-hidden md:mb-4"
-              >
-                <img src={p.src} alt={p.alt} loading="lazy" width={p.w} height={p.h} className="h-auto w-full transition-transform duration-700 group-hover:scale-105" />
-                <span className="eyebrow absolute left-3 top-3 text-[0.6rem] text-ivory">{p.cat}</span>
-              </button>
-            ))}
-          </div>
+            
         </div>
       </section>
 
