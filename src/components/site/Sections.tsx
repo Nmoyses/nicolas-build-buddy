@@ -15,55 +15,54 @@ import paisagem from "@/assets/paisagem.avif.asset.json";
 import paisagem2 from "@/assets/paisagem2.avif.asset.json";
 import finalsite from "@/assets/finalsite.avif.asset.json";
 
-
 // Definição dos seus 4 layouts de galeria
 const galleryLayouts = [
   {
     id: 1,
     title: "Layout 1 - Destaque Exterior",
     photos: [
-      { src: hero.url, alt: "Chalé Malbec entre a lavanda ao entardecer", cat: "Exterior", span: "large" },
-      { src: quarto.url, alt: "Quarto com teto de madeira e vista para a varanda", cat: "Quarto" },
-      { src: banheiro.url, alt: "Banheiro com banheira de pedra", cat: "Banheiro" },
-      { src: fogo.url, alt: "Fogo de chão no deck ao pôr do sol", cat: "Área externa" },
-      { src: varanda.url, alt: "Varanda com mesa e bancos", cat: "Área externa" },
-      { src: paisagem2.url, alt: "Vista das montanhas", cat: "Paisagem" },
+      { src: hero.url, alt: "Chalé Malbec entre a lavanda ao entardecer", cat: "Exterior", w: 720, h: 960 },
+      { src: quarto.url, alt: "Quarto com teto de madeira e vista para a varanda", cat: "Quarto", w: 720, h: 540 },
+      { src: banheiro.url, alt: "Banheiro com banheira de pedra", cat: "Banheiro", w: 720, h: 540 },
+      { src: fogo.url, alt: "Fogo de chão no deck ao pôr do sol", cat: "Área externa", w: 1200, h: 900 },
+      { src: varanda.url, alt: "Varanda com mesa e bancos", cat: "Área externa", w: 720, h: 960 },
+      { src: paisagem2.url, alt: "Vista das montanhas", cat: "Paisagem", w: 720, h: 540 },
     ]
   },
   {
     id: 2,
     title: "Layout 2 - Foco Interno",
     photos: [
-      { src: quarto.url, alt: "Quarto aconchegante", cat: "Quarto", span: "large" },
-      { src: hero.url, alt: "Exterior do chalé", cat: "Exterior" },
-      { src: varanda.url, alt: "Varanda externa", cat: "Área externa" },
-      { src: banheiro.url, alt: "Banheiro moderno", cat: "Banheiro" },
-      { src: fogo.url, alt: "Área de fogueira", cat: "Área externa" },
-      { src: paisagem2.url, alt: "Paisagem panorâmica", cat: "Paisagem" },
+      { src: quarto.url, alt: "Quarto aconchegante", cat: "Quarto", w: 720, h: 540 },
+      { src: hero.url, alt: "Exterior do chalé", cat: "Exterior", w: 720, h: 960 },
+      { src: varanda.url, alt: "Varanda externa", cat: "Área externa", w: 720, h: 960 },
+      { src: banheiro.url, alt: "Banheiro moderno", cat: "Banheiro", w: 720, h: 540 },
+      { src: fogo.url, alt: "Área de fogueira", cat: "Área externa", w: 1200, h: 900 },
+      { src: paisagem2.url, alt: "Paisagem panorâmica", cat: "Paisagem", w: 720, h: 540 },
     ]
   },
   {
     id: 3,
     title: "Layout 3 - Área Externa",
     photos: [
-      { src: fogo.url, alt: "Fogueira ao ar livre", cat: "Área externa", span: "large" },
-      { src: varanda.url, alt: "Deck de madeira", cat: "Área externa" },
-      { src: hero.url, alt: "Vista geral", cat: "Exterior" },
-      { src: quarto.url, alt: "Quarto principal", cat: "Quarto" },
-      { src: banheiro.url, alt: "Banheiro", cat: "Banheiro" },
-      { src: paisagem2.url, alt: "Nascer do sol", cat: "Paisagem" },
+      { src: fogo.url, alt: "Fogueira ao ar livre", cat: "Área externa", w: 1200, h: 900 },
+      { src: varanda.url, alt: "Deck de madeira", cat: "Área externa", w: 720, h: 960 },
+      { src: hero.url, alt: "Vista geral", cat: "Exterior", w: 720, h: 960 },
+      { src: quarto.url, alt: "Quarto principal", cat: "Quarto", w: 720, h: 540 },
+      { src: banheiro.url, alt: "Banheiro", cat: "Banheiro", w: 720, h: 540 },
+      { src: paisagem2.url, alt: "Nascer do sol", cat: "Paisagem", w: 720, h: 540 },
     ]
   },
   {
     id: 4,
     title: "Layout 4 - Experiência Completa",
     photos: [
-      { src: paisagem2.url, alt: "Vista das montanhas", cat: "Paisagem", span: "large" },
-      { src: banheiro.url, alt: "Banheira com vista", cat: "Banheiro" },
-      { src: quarto.url, alt: "Quarto confortável", cat: "Quarto" },
-      { src: hero.url, alt: "Chalé ao anoitecer", cat: "Exterior" },
-      { src: varanda.url, alt: "Varanda aconchegante", cat: "Área externa" },
-      { src: fogo.url, alt: "Fogo de chão", cat: "Área externa" },
+      { src: paisagem2.url, alt: "Vista das montanhas", cat: "Paisagem", w: 720, h: 540 },
+      { src: banheiro.url, alt: "Banheira com vista", cat: "Banheiro", w: 720, h: 540 },
+      { src: quarto.url, alt: "Quarto confortável", cat: "Quarto", w: 720, h: 540 },
+      { src: hero.url, alt: "Chalé ao anoitecer", cat: "Exterior", w: 720, h: 960 },
+      { src: varanda.url, alt: "Varanda aconchegante", cat: "Área externa", w: 720, h: 960 },
+      { src: fogo.url, alt: "Fogo de chão", cat: "Área externa", w: 1200, h: 900 },
     ]
   }
 ];
@@ -109,8 +108,9 @@ export function Sections() {
 
   const activeLayout = galleryLayouts[currentLayoutIndex];
   const [index, setIndex] = useState<number | null>(null);
+  
   const openAt = (i: number) => { setIndex(i); track("gallery_open", { i }); };
-  const step = (d: number) => setIndex((i) => (i === null ? i : (i + d + photos.length) % photos.length));
+  const step = (d: number) => setIndex((i) => (i === null ? i : (i + d + activeLayout.photos.length) % activeLayout.photos.length));
 
   return (
     <main id="topo">
@@ -145,7 +145,7 @@ export function Sections() {
         </figure>
       </section>
 
-      {/* CHALÉ + GALERIA */}
+      {/* CHALÉ + GALERIA COM CARROSSEL DE 4 LAYOUTS */}
       <section id="chale" className="bg-linen py-24 md:py-36">
         <div className="mx-auto max-w-7xl px-6">
           <SectionHead eyebrow="Conheça o Chalé Malbec" title="Seu refúgio, do seu jeito.">
@@ -156,8 +156,47 @@ export function Sections() {
           {site.features.length > 0 && (
             <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm">{site.features.map((f) => <li key={f}>{f}</li>)}</ul>
           )}
-          <div className="mt-16 columns-2 gap-3 md:columns-3 md:gap-4">
-            
+          
+          <div className="mt-16">
+            <div className="columns-2 gap-3 md:columns-3 md:gap-4">
+              {activeLayout.photos.map((p, i) => (
+                <button
+                  key={i}
+                  onClick={() => openAt(i)}
+                  aria-label={`Ampliar: ${p.alt}`}
+                  className="group relative mb-3 block w-full break-inside-avoid overflow-hidden md:mb-4"
+                >
+                  <img src={p.src} alt={p.alt} loading="lazy" width={p.w} height={p.h} className="h-auto w-full transition-transform duration-500 group-hover:scale-105" />
+                  <span className="eyebrow absolute left-3 top-3 text-[0.6rem] text-ivory">{p.cat}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Setas de navegação para alternar entre os 4 layouts */}
+            <div className="flex justify-center items-center gap-6 mt-8">
+              <button 
+                onClick={prevLayout}
+                type="button"
+                className="p-3 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-800 transition-colors shadow"
+                aria-label="Layout anterior"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+
+              <span className="text-sm font-medium text-stone-700 tracking-wider">
+                {activeLayout.title} ({currentLayoutIndex + 1} de {galleryLayouts.length})
+              </span>
+
+              <button 
+                onClick={nextLayout}
+                type="button"
+                className="p-3 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-800 transition-colors shadow"
+                aria-label="Próximo layout"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -165,11 +204,11 @@ export function Sections() {
         <DialogContent className="max-w-6xl border-none bg-wood p-0 text-ivory [&>button]:hidden" onKeyDown={(e) => { if (e.key === "ArrowRight") step(1); if (e.key === "ArrowLeft") step(-1); }}>
           {index !== null && (
             <>
-              <DialogTitle className="sr-only">{photos[index]!.alt}</DialogTitle>
-              <img src={photos[index]!.src} alt={photos[index]!.alt} className="max-h-[85vh] w-full object-contain" />
+              <DialogTitle className="sr-only">{activeLayout.photos[index]!.alt}</DialogTitle>
+              <img src={activeLayout.photos[index]!.src} alt={activeLayout.photos[index]!.alt} className="max-h-[85vh] w-full object-contain" />
               <div className="flex items-center justify-between p-3">
                 <button onClick={() => step(-1)} aria-label="Foto anterior" className="p-3"><ChevronLeft /></button>
-                <span className="eyebrow">{index + 1} / {photos.length}</span>
+                <span className="eyebrow">{index + 1} / {activeLayout.photos.length}</span>
                 <button onClick={() => step(1)} aria-label="Próxima foto" className="p-3"><ChevronRight /></button>
                 <button onClick={() => setIndex(null)} aria-label="Fechar" className="p-3"><X /></button>
               </div>
